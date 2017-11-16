@@ -1,0 +1,14 @@
+{
+  "composition":
+    "/html/body[@class='flash-style']/div[@id='layout-container']/div[@id='content-container']/div/div[@class='main-content doctors-main-content']/div[@class='content']/div[@id='container']/div/div/div[@id='drug_header']/div[1]/div[1]/div[@id='drug_info']/div[@class='saltInfo DrugInfo-m__salt-name___2LVQN']/a",
+  "used_for":
+    "/html/body[@class='flash-style']/div[@id='layout-container']/div[@id='content-container']/div/div[@class='main-content doctors-main-content']/div[@class='content']/div[@id='container']/div/div/div[@id='drug_header']/div[1]/div[@id='drug_uses']/div[1]/div[@class='DrugInfo-m__uses___1qeic']/a",
+  "substitutes":
+    "/html/body[@class='flash-style']/div[@id='layout-container']/div[@id='content-container']/div/div[@class='main-content doctors-main-content']/div[@class='content']/div[@id='container']/div/div/div[@class='DrugPage-m__container___3OM3I']/div[@class='DrugPage-m__div-substitute-list___3ndqC']/div[@id='sub_list']/div[@class='SubstituteList-m__container___3kWwW']/div[@class='SubstituteList-m__list___vs2DJ']/div[@class='row SubstituteItem__item___1wbMv']/div[@class='col-xs-6']/a/div",
+  "feedback_value":
+    "/html/body[@class='flash-style']/div[@id='layout-container']/div[@id='content-container']/div/div[@class='main-content doctors-main-content']/div[@class='content']/div[@id='container']/div/div/div[@class='DrugPage-m__container___3OM3I']/div[6]/div[@id='2']/div[@class='PatientConcern-m__patient-concern___3IhhZ']/div[@class='row']/div[@class='col-xs-12 col-sm-6 PatientConcern-m__feedback-container___19hH0']/div[@class='row']/div/div[@class='row']/div/div",
+  "feedback_key":
+    "/html/body[@class='flash-style']/div[@id='layout-container']/div[@id='content-container']/div/div[@class='main-content doctors-main-content']/div[@class='content']/div[@id='container']/div/div/div[@class='DrugPage-m__container___3OM3I']/div[6]/div[@id='2']/div[@class='PatientConcern-m__patient-concern___3IhhZ']/div[@class='row']/div[@class='col-xs-12 col-sm-6 PatientConcern-m__feedback-container___19hH0']/div[@class='row']/div/div[@class='row']/div[@class='col-xs-4 FeedbackBar__details-text___AoQKo']",
+  "feedback_container":
+    "/html/body[@class='flash-style']/div[@id='layout-container']/div[@id='content-container']/div/div[@class='main-content doctors-main-content']/div[@class='content']/div[@id='container']/div/div/div[@class='DrugPage-m__container___3OM3I']/div[6]/div[@id='2']/div[@class='PatientConcern-m__patient-concern___3IhhZ']/div[@class='row']/div[@class='col-xs-12 col-sm-6 PatientConcern-m__feedback-container___19hH0']"
+}

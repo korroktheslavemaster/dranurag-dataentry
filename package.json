@@ -1,0 +1,29 @@
+{
+  "name": "dranurag-data-entry-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cached-request": "^1.1.2",
+    "dnscache": "^1.0.1",
+    "express": "^4.16.2",
+    "jsonfile": "^4.0.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.1",
+    "mongoose": "^4.12.4",
+    "mongoose-auto-increment": "^5.0.1",
+    "monk": "^6.0.5",
+    "react-redux": "^5.0.6",
+    "request": "^2.83.0",
+    "request-promise-cache": "^1.0.6",
+    "request-promise-native": "^1.0.5",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.24"
+  }
+}
