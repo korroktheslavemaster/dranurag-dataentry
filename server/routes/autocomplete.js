@@ -66,9 +66,9 @@ module.exports = app => {
   });
 
   app.post("/addDrugs", (req, res) => {
-    const { docs } = req.body;
+    const { docs, prescriptionId } = req.body;
     promises = docs.map(doc => {
-      return new OnemgDrug(doc).save();
+      return new OnemgDrug({ ...doc, prescriptionId: prescriptionId }).save();
     });
     Promise.all(promises)
       .then(docs => {

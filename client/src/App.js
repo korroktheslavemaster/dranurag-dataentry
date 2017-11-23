@@ -46,7 +46,7 @@ var DisplaySelectedResults = ({ results, onClick, inputCallbacks }) => (
           <Field
             key={idx}
             txt={key}
-            value={e[key]}
+            value={e[key] || ""}
             onChange={event => {
               cb(e.listId, event.target.value);
             }}
@@ -62,18 +62,29 @@ class App extends Component {
   state = {
     onemgResults: [],
     healthosResults: [],
-    resultsToSave: []
+    resultsToSave: [],
+    newestResultsTime: new Date()
   };
 
   fetchResults = (source, q) => {
+    var startTime = new Date();
     fetch("/autocomplete/" + source + "?q=" + q)
       .then(res => res.json())
-      .then(res => this.setState({ [`${source}Results`]: res }));
+      // only update if its a newer request
+      .then(
+        res =>
+          this.state.newestResultsTime < startTime
+            ? this.setState({
+                [`${source}Results`]: res,
+                newestResultsTime: startTime
+              })
+            : this.state
+      );
   };
 
   onInputChange = event => {
     var q = event.target.value;
-    if (q) ["onemg" /*, "healthos"*/].forEach(e => this.fetchResults(e, q));
+    if (q) ["onemg", "healthos"].forEach(e => this.fetchResults(e, q));
   };
 
   onSave = () => {
@@ -84,7 +95,12 @@ class App extends Component {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ docs: resultsToSave })
+      body: JSON.stringify({
+        docs: resultsToSave,
+        prescriptionId: Math.random()
+          .toString(36)
+          .substring(7)
+      })
     }).then(res => {
       console.log(res);
       this.setState({ resultsToSave: [] });
@@ -93,9 +109,11 @@ class App extends Component {
 
   onAdd = e => {
     const { resultsToSave } = this.state;
+    console.log("adding element");
+    console.log(e);
     listId++;
     this.setState({
-      resultsToSave: [...resultsToSave, { ...e, listId: listId }]
+      resultsToSave: [{ ...e, listId: listId }, ...resultsToSave]
     });
   };
 
@@ -124,10 +142,13 @@ class App extends Component {
       <div className="App container">
         <input onChange={this.onInputChange} />
         <div className="row">
-          <div className="col-6">
+          <div className="col">
             <DisplayResults results={onemgResults} onClick={this.onAdd} />
           </div>
-          <div className="col-6">
+          <div className="col">
+            <button className="btn btn-primary" onClick={this.onSave}>
+              Save
+            </button>
             <DisplaySelectedResults
               results={resultsToSave}
               onClick={this.onRemove}
@@ -141,9 +162,6 @@ class App extends Component {
                 cb: (listId, value) => this.onParamChanged(listId, value, key)
               }))}
             />
-            <button className="btn btn-primary" onClick={this.onSave}>
-              Save
-            </button>
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ var requestUncached = require("request"),
   cachedRequest = require("cached-request")(requestUncached),
   cacheDirectory = "/tmp/cache";
 
-cachedRequest.setValue("ttl", 100000);
+cachedRequest.setValue("ttl", 0);
 cachedRequest.setCacheDirectory(cacheDirectory);
 var request = cachedRequest;
 
@@ -150,8 +150,19 @@ runOn = [
   // 144953
 ];
 run = () => {
-  OnemgDrug.find({ url: { $regex: /^\/drug/ } })
-    .then(docs => _.uniqBy(docs, doc => doc.id))
+  Promise.all([
+    OnemgDrug.find({ url: { $regex: /^\/drug/ } }).then(docs =>
+      _.uniqBy(docs, doc => doc.id)
+    ),
+    DrugInfo.find().then(docs => docs.map(doc => doc.id))
+  ])
+    .then(([onemgdrugs, doneIds]) =>
+      onemgdrugs.filter(doc => doneIds.indexOf(doc.id) == -1)
+    )
+    .then(docs => {
+      console.log(docs.length);
+      return docs;
+    })
     // .then(docs => docs.filter(doc => runOn.indexOf(doc.id) != -1))
     .then(docs => {
       promises = docs.map(doc => {

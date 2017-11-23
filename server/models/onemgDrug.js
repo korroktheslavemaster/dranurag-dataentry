@@ -16,7 +16,8 @@ var schema = mongoose.Schema({
   frequency: String,
   specialComments: String,
   duration: String,
-  dosage: String
+  dosage: String,
+  prescriptionId: String
 });
 
 module.exports = mongoose.model("OnemgDrug", schema);
