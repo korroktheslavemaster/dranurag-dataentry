@@ -5,11 +5,12 @@ var jsonfile = require("jsonfile");
 var request = require("request");
 var _ = require("lodash");
 var OnemgDrug = require("../models/onemgDrug");
+var OnemgTest = require("../models/onemgTest");
 var Prescription = require("../models/prescription");
 
 module.exports = app => {
   var startTime = new Date().getTime();
-  app.get("/autocomplete/onemg", function(req, res) {
+  app.get("/autocomplete/onemgDrugs", function(req, res) {
     var ts = Math.round((new Date().getTime() - startTime) / 1000);
     var headers = {
       "Accept-Encoding": "gzip, deflate, sdch, br",
@@ -76,6 +77,46 @@ module.exports = app => {
         return new Prescription({ drugs: docs.map(drug => drug._id) }).save();
       })
       .then(all => res.send("OK"))
+      .catch(e => {
+        console.log(e);
+        res.send("NOTOK");
+      });
+  });
+
+  app.get("/autocomplete/onemgTests", (req, res) => {
+    var headers = {
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "en-US,hi-IN;q=0.8,hi;q=0.6,en;q=0.4",
+      "User-Agent":
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36",
+      Accept: "application/json, text/plain, */*",
+      Referer: "https://www.1mg.com/labs/new-delhi",
+      Connection: "keep-alive",
+      Cookie:
+        "VISITOR-ID=6519653a-e3fd-40fb-c093-231ce7ab097f_acce55_1509100128; __uzma=11f0bdef-cf05-47f7-8042-a81341b77a50; __uzmb=1510833558; session=eunBEvAHA8L4_E3JwZh8xw.O10gdznimPlXZ6129LZdoukruBUPI2s5T__F1cWWfhAVfiboAYz8DJSTKwQ-6RuOYYlnqBzUZUY1NpL7pyI5Csj60X6IHCJuNR_1BQcs8YSsGded5Q9JmS5EONBoeFweTGjv3eQVlYUQhy5GtDxPXrpiQB1kD26j4-JyaWd9VEPddNHCpm3FdJ75p8OPEwigVJHHaS7f-bVp68Yt8miPBBeH8KBezSZ2KlDwKLjVu5oDwaDz_vmbHPkZ1n0HaKe1.1512114795011.2592000000.pJbqlTMkvb9tgzICCp7_2eb5aVCzKUgZdtl5FodBLag; geolocation=true; _csrf=AGwWeJdp9MBT21BywcCKOrC6; city=new%20delhi; __uzmc=3386453233249; uzdbm_a=834f25bc-aa29-7dee-1b1a-4e8661db4463; __uzmd=1512369879"
+    };
+
+    var options = {
+      url: `https://www.1mg.com/labs_api/v4/tests?page_number=0&page_size=10&city=new+delhi&search_text=${req
+        .query.q}&remove_radiology=false&remove_unavailable=false`,
+      headers: headers,
+      gzip: true,
+      time: true,
+      forever: true
+    };
+    request.get(options, (err, response, body) => {
+      // console.log(response.timingPhases);
+      res.json(JSON.parse(body));
+    });
+  });
+
+  app.post("/addTests", (req, res) => {
+    const { docs, prescriptionId } = req.body;
+    promises = docs.map(doc =>
+      new OnemgTest({ ...doc, prescriptionId }).save()
+    );
+    Promise.all(promises)
+      .then(docs => res.send("OK"))
       .catch(e => {
         console.log(e);
         res.send("NOTOK");
